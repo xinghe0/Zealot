@@ -1,0 +1,42 @@
+ruby:
+  if user_signed_in_or_guest_mode?
+    body_class = 'sidebar-expand-lg sidebar-mini bg-body-tertiary'
+  else
+    body_class = 'layout-top-nav'
+  end
+
+doctype html
+html lang="#{I18n.locale}"
+  head
+    title = page_title(yield :title)
+    meta[charset="utf-8"]
+    meta[name="viewport" content="width=device-width, initial-scale=1.0"]
+    link[rel="apple-touch-icon" sizes="60x60" href="#{asset_path('zealot-icon.png')}"]
+    link[rel="apple-touch-icon" sizes="120x120" href="#{asset_path('zealot-icon@2x.png')}"]
+    link[rel="apple-touch-icon" sizes="180x180" href="#{asset_path('zealot-icon@3x.png')}"]
+    link[rel="icon" type="image/x-icon" href="#{asset_path('zealot-icon@3x.png')}"]
+    == favicon_link_tag 'zealot-icon.png'
+    == favicon_link_tag 'zealot-icon-dark.png', media: "(prefers-color-scheme: dark)"
+    == stylesheet_link_tag 'application', 'data-turbolinks-track': 'reload'
+    == javascript_include_tag 'application', defer: true, type: :module, 'data-turbolinks-track': 'reload'
+    == yield :header_tags
+    == action_cable_meta_tag
+    == csrf_meta_tags
+
+  body[
+    class="layout-fixed #{body_class}"
+    data-controller="global"
+    data-global-env-value="#{Rails.env}"
+    data-global-root-url-value="#{root_url}"
+    data-global-apperance-value="#{current_user&.appearance || Setting.site_appearance}"
+  ]
+    .app-wrapper
+      == render 'layouts/navigation'
+
+      main.app-main
+        == render 'layouts/content'
+
+      == render 'layouts/footer'
+
+    == render 'layouts/analytics'
+    == turbo_frame_tag :modal

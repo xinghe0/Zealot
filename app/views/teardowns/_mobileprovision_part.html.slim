@@ -1,0 +1,31 @@
+- if @metadata.mobileprovision.present?
+  .card.mb-3
+    .card-header
+      h3.card-title
+        - if enable_icon
+          i.icon.fas.fa-certificate
+        = t('teardowns.show.mobileprovision')
+      .card-tools
+        button.btn.btn-tool data-lte-toggle="card-collapse"
+          i.fas.fa-plus data-lte-icon="expand"
+          i.fas.fa-minus data-lte-icon="collapse"
+    .card-body.p-0.ps-3
+      dl.system-info.pb-0
+        dt = t('teardowns.show.mobileprovision_name')
+        dd
+          pre = "#{@metadata.mobileprovision['profile_name']} (#{release_type_name(@metadata.release_type)})"
+        dt = t('teardowns.show.uuid')
+        dd
+          pre = @metadata.mobileprovision['uuid']
+        dt = t('teardowns.show.team_id')
+        dd
+          pre = "#{@metadata.mobileprovision['team_name']} (#{@metadata.mobileprovision['team_identifier'].first})"
+        dt = t('teardowns.show.created_at')
+        dd
+          pre = l(Time.zone.parse(@metadata.mobileprovision['created_at']), format: :nice)
+        dt = t('teardowns.show.expired_at')
+        dd
+          pre
+            = "#{l(Time.zone.parse(@metadata.mobileprovision['expired_at']), format: :nice)} ("
+            = expired_date_tips(@metadata.mobileprovision['expired_at'], colorful: true)
+            | )

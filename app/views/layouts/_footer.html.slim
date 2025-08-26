@@ -1,0 +1,8 @@
+footer.app-footer
+  .float-end.d-none.d-sm-inline
+    = show_api
+
+  div
+    span = powered_by
+    - if Setting.show_footer_version
+      span.px-1 = zealot_version

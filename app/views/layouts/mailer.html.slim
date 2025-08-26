@@ -1,0 +1,26 @@
+doctype html
+html
+  head
+    title = yield :title
+    link[rel="apple-zealot-icon" sizes="60x60" href="#{asset_path('zealot-icon.png')}"]
+    link[rel="apple-zealot-icon" sizes="120x120" href="#{asset_path('zealot-icon@2x.png')}"]
+    link[rel="apple-zealot-icon" sizes="180x180" href="#{asset_path('zealot-icon@3x.png')}"]
+    link[rel="icon" type="image/x-icon" href="#{asset_path('zealot-icon@3x.png')}"]\
+    meta[name="turbo-prefetch" content="false"]
+    == favicon_link_tag 'zealot-icon.png'
+    == stylesheet_link_tag 'application'
+    == javascript_include_tag 'application', defer: true
+    == csrf_meta_tags
+
+  body.hold-transition.layout-top-nav[
+    data-controller="global"
+    data-global-root-url-value="#{root_url}"
+    data-global-apperance-value="#{Setting.site_appearance}"
+  ]
+    .container
+      .col.align-self-center.mt-5
+        .card.card-outline.card-primary
+          .card-header.text-center
+            = link_to Setting.site_title, Setting.site_domain, class: 'h1'
+          .card-body
+            = yield

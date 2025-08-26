@@ -1,0 +1,24 @@
+- content_for :title do
+  = @title
+
+- content_for :section_title do
+  = @title
+
+- content_for :section_rightpanel do
+  - if current_user&.manage?
+    a.btn.btn-success href="#{new_app_path}" data-turbo-frame="modal"
+      i.icon.far.fa-plus-square
+      = t('apps.new.title')
+
+- if @apps.present?
+  #search.row.mb-4
+    == render 'apps/search'
+
+#apps.row
+  - if @apps.present?
+    - @apps.each do |app|
+      == render "apps/app", app: app
+  - elsif archived_path?
+    == render "apps/empty_archived_app"
+  - else
+    == render "apps/empty_active_app"

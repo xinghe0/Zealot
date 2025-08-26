@@ -1,0 +1,16 @@
+.card
+  .card-header
+    h3.card-title = t('apps.show.collaborators')
+    .card-tools
+      - if (current_user.admin? || current_user.app_roles?(app, :admin)) && !@app.archived
+        a href="#{new_app_collaborator_path(app)}" data-turbo-frame="modal"
+          i.icon.fas.fa-user-plus
+          = t('apps.show.new_collaborator')
+  .card-body.p-0
+    .p-2.ps-3.d-flex.fw-bolder.border-bottom.border-1
+      .col-5.my-auto = t('apps.show.username')
+      .col-5.my-auto = t('apps.show.role')
+      .col-2.my-auto
+    #collaborators
+      - app.collaborators.each do |collaborator|
+        == render 'collaborator', collaborator: collaborator, app: @app

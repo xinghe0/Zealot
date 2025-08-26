@@ -1,0 +1,55 @@
+version: '3.7'
+
+services:
+  nginx:
+    image: nginx:alpine
+    container_name: zealot-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    depends_on:
+      - zealot
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:13
+    environment:
+      POSTGRES_DB: zealot
+      POSTGRES_USER: zealot
+      POSTGRES_PASSWORD: zealot_password
+    volumes:
+      - ./data/postgres:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+
+  zealot:
+    image: tryzealot/zealot:latest
+    depends_on:
+      - postgres
+    environment:
+      ZEALOT_ADMIN_EMAIL: admin@zealot.com        # 默认管理员邮箱
+      ZEALOT_ADMIN_PASSWORD: ze@l0t               # 默认管理员密码
+      ZEALOT_POSTGRES_HOST: postgres
+      ZEALOT_POSTGRES_PORT: 5432
+      ZEALOT_POSTGRES_USERNAME: zealot
+      ZEALOT_POSTGRES_PASSWORD: zealot_password
+      ZEALOT_POSTGRES_DB_NAME: zealot
+      RAILS_ENV: production
+      SECRET_KEY_BASE: 7f0bb1dd9c695062013789a8618e9a84c0598b9898d8b2583ada33f666009aba409a9a4f94b237bbcdfb1a23497c2763912a209179be537fcddf54d3009acd37
+      RAILS_SERVE_STATIC_FILES: 'true'
+      ZEALOT_DOMAIN: 192.168.203.6                     # 设置域名，其他设备可访问
+      ZEALOT_HTTPS: 'true'                             # 启用HTTPS
+    # 不需要直接暴露端口，通过Nginx代理访问
+    volumes:
+      - ./data/uploads:/app/public/uploads        # 上传文件目录
+      - ./data/backup:/app/public/backup          # 备份文件目录
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  zealot_uploads:
+  zealot_backup:

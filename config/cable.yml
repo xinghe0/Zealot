@@ -1,0 +1,13 @@
+default: &default
+  adapter: postgresql
+
+development:
+  <<: *default
+  channel_prefix: zealot_development
+
+test:
+  adapter: test
+
+production:
+  <<: *default
+  channel_prefix: zealot_production
