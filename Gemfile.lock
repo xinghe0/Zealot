@@ -427,7 +427,7 @@ GEM
       date
       stringio
     public_suffix (6.0.1)
-    puma (6.6.0)
+    puma (6.6.1)
       nio4r (~> 2.0)
     pundit (2.5.0)
       activesupport (>= 3.0.0)
@@ -716,7 +716,7 @@ DEPENDENCIES
   propshaft (= 1.1.0)
   pry-rails
   pry-rescue
-  puma (~> 6.6.0)
+  puma (~> 6.6.1)
   pundit (~> 2.5.0)
   rack (~> 3.0.16)
   rack-cors (~> 3.0.0)
